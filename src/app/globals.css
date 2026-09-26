@@ -6,9 +6,14 @@
   --muted: #5c5c5c;
   --surface: #f3f3f3;
   --line: #e6e6e6;
+  --ink: #121416;
 }
 
+/* Styles that apply once the about+projects zone has turned dark (class toggled by GSAP in DarkZone). */
+@custom-variant zone-dark (&:where(.is-dark, .is-dark *));
+
 @theme inline {
+  --color-ink: var(--ink);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
@@ -18,6 +23,24 @@
   --font-serif: var(--font-newsreader);
   --font-mono: var(--font-jetbrains-mono);
   --font-open: var(--font-open-sans);
+}
+
+/* Infinite horizontal slider: the track holds two identical halves and slides by one half. */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+.animate-marquee:hover,
+.animate-marquee:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
 }
 
 /* Custom rounded-arrow cursor; hotspot sits on the tip. White outline keeps it visible on dark sections. */

@@ -1,58 +1,65 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { SmileyIcon, SparkleIcon } from "@/components/icons";
 
-// Dark intro block: starts inset with rounded corners, expands to full width as it scrolls into view.
-// Progress (0 → 1) is written to the --p CSS variable directly to avoid re-rendering on every scroll.
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+// Dark intro block: starts inset with rounded corners, then slowly expands to full width while scrolling.
+// GSAP scrubs the --p CSS variable (0 → 1); the clip-path below reads it.
 export default function AboutIntro() {
   const ref = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
 
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const { top } = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // 0 when the section's top enters the bottom of the screen, 1 once it reaches 35% from the top.
-      const p = Math.min(1, Math.max(0, (vh - top) / (vh * 0.65)));
-      el.style.setProperty("--p", p.toFixed(4));
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          ref.current,
+          { "--p": 0 },
+          {
+            "--p": 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: ref.current,
+              start: "top bottom", // section's top enters the bottom of the screen
+              end: "top 10%", // fully expanded when its top is near the top of the screen
+              scrub: 1.5, // smoothing lag in seconds — higher feels slower/softer
+            },
+          },
+        );
+      });
 
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(ref.current, { "--p": 1 });
+      });
+    },
+    { scope: ref },
+  );
 
   // Inline (wrappable) on phones so long pills never overflow; a single unbroken pill from sm up.
   const pill =
     "rounded-full px-3 py-1 box-decoration-clone sm:inline-block sm:py-0 sm:leading-[1.6]";
 
+  // --inset: starting side gap. --pad: text padding inside the block (added to the inset so text never gets clipped).
   return (
     <section
       ref={ref}
       id="about"
-      className="my-24 sm:my-32 lg:my-40 [--inset:12px] sm:[--inset:40px] lg:[--inset:56px] [--p:0]"
+      className="[--inset:20px] [--pad:24px] sm:[--inset:64px] sm:[--pad:48px] lg:[--inset:140px] lg:[--pad:80px] [--p:0]"
     >
       <div
-        className="bg-[#121416] font-open text-[#d2d2d2]"
+        className="bg-ink font-open text-[#d2d2d2]"
         style={{
           clipPath:
-            "inset(0 calc((1 - var(--p)) * var(--inset)) round calc((1 - var(--p)) * 24px))",
+            "inset(0 calc((1 - var(--p)) * var(--inset)) round calc((1 - var(--p)) * 32px))",
         }}
       >
-        <p className="mx-auto max-w-[1680px] px-8 sm:px-20 lg:px-40 py-24 sm:py-32 lg:py-40 font-medium text-[17px] sm:text-2xl lg:text-[28px] leading-[2.3] sm:leading-[2.4] lg:leading-[2.6]">
+        <p className="mx-auto max-w-[1680px] px-[calc(var(--inset)+var(--pad))] py-24 sm:py-32 lg:py-40 font-medium text-[17px] sm:text-2xl lg:text-[28px] leading-[2.3] sm:leading-[2.4] lg:leading-[2.6]">
           I am a versatile designer who enjoys delving into{" "}
           <em className="font-extrabold tracking-[0.08em] text-white">various art forms and mediums</em>{" "}
           <SparkleIcon className="inline-block size-[1.4em] align-middle text-white" />{" "}
