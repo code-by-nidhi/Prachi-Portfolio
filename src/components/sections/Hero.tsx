@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 import { ArrowCircleIcon } from "@/components/icons";
-import Flower from "@/components/hero/Flower";
 import Polaroid from "@/components/hero/Polaroid";
 import Tape from "@/components/hero/Tape";
 
@@ -26,8 +25,6 @@ export default function Hero() {
               <ArrowCircleIcon className="size-5" />
             </Link>
           </div>
-
-          <Flower className="animate-float hidden lg:block absolute left-[54%] top-[165px] size-[52px]" />
 
           <div className="lg:mr-[100px] self-center lg:self-auto">
             <Polaroid src={site.profileImage} name={site.name} caption={site.role} year={site.year} />
