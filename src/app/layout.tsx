@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { Inter_Tight, JetBrains_Mono, Newsreader, Open_Sans } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { site } from "@/data/site";
+import { Inter_Tight, JetBrains_Mono, Newsreader, Open_Sans, Yellowtail } from "next/font/google";
+import { getContent } from "@/lib/content";
 import "./globals.css";
 
 const interTight = Inter_Tight({
@@ -26,21 +24,28 @@ const openSans = Open_Sans({
   style: ["normal", "italic"],
 });
 
-export const metadata: Metadata = {
-  title: `${site.name} — Portfolio`,
-  description: "I design products and create content that tells stories.",
-};
+const yellowtail = Yellowtail({
+  variable: "--font-yellowtail",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { site, hero } = await getContent();
+  return {
+    title: `${site.name} — Portfolio`,
+    description: hero.headline.replace(/\s+/g, " "),
+  };
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${interTight.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${openSans.variable} antialiased`}
+      className={`${interTight.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${openSans.variable} ${yellowtail.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

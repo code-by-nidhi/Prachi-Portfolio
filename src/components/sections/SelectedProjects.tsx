@@ -1,17 +1,19 @@
+import Image from "next/image";
 import Link from "next/link";
-import { projects } from "@/data/site";
-
-// The list is repeated so one half of the track is always wider than the screen,
-// then rendered twice so the marquee can loop seamlessly by sliding exactly one half.
-const half = [...projects, ...projects];
-const track = [...half, ...half];
+import type { SiteContent } from "@/data/site";
+import { isUnoptimized } from "@/lib/image";
 
 // Placeholder cards — redesign later.
-export default function SelectedProjects() {
+export default function SelectedProjects({ projects: { title, items: projects } }: { projects: SiteContent["projects"] }) {
+  // The list is repeated so one half of the track is always wider than the screen,
+  // then rendered twice so the marquee can loop seamlessly by sliding exactly one half.
+  const half = [...projects, ...projects];
+  const track = [...half, ...half];
+
   return (
     <section id="projects" className="pt-12 sm:pt-16 pb-24 sm:pb-32 lg:pb-40">
       <div className="mx-auto max-w-[1680px] px-6 sm:px-14">
-        <h2 className="text-4xl font-medium tracking-[-0.04em]">Selected projects</h2>
+        <h2 className="text-4xl font-medium tracking-[-0.04em]">{title}</h2>
       </div>
 
       <div className="mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
@@ -29,8 +31,19 @@ export default function SelectedProjects() {
                   tabIndex={duplicate ? -1 : undefined}
                   className="group block"
                 >
-                  <div className="aspect-[4/3] rounded-lg flex items-center justify-center bg-surface text-muted transition-colors duration-700 group-hover:bg-neutral-200 zone-dark:bg-white/[0.06] zone-dark:text-white/50 zone-dark:group-hover:bg-white/10">
-                    Project image
+                  <div className="relative overflow-hidden aspect-[4/3] rounded-lg flex items-center justify-center bg-surface text-muted transition-colors duration-700 group-hover:bg-neutral-200 zone-dark:bg-white/[0.06] zone-dark:text-white/50 zone-dark:group-hover:bg-white/10">
+                    {project.image ? (
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(min-width: 1024px) 480px, (min-width: 640px) 420px, 78vw"
+                        unoptimized={isUnoptimized(project.image)}
+                        className="object-cover"
+                      />
+                    ) : (
+                      "Project image"
+                    )}
                   </div>
                   <div className="mt-4 flex items-baseline justify-between gap-4">
                     <h3 className="text-xl font-medium tracking-tight">{project.title}</h3>

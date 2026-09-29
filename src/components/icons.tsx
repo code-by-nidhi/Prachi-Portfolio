@@ -10,13 +10,11 @@ export function InfoIcon({ className }: IconProps) {
   );
 }
 
-export function BasketballIcon({ className }: IconProps) {
+export function CompassIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.25} className={className} aria-hidden>
       <circle cx="12" cy="12" r="10" />
-      <path d="M12 2v20M2 12h20" />
-      <path d="M5.2 4.7A10 10 0 0 1 8 12a10 10 0 0 1-2.8 7.3" />
-      <path d="M18.8 4.7A10 10 0 0 0 16 12a10 10 0 0 0 2.8 7.3" />
+      <path d="M15.9 8.1 13.4 13.4 8.1 15.9 10.6 10.6Z" strokeLinejoin="round" />
     </svg>
   );
 }

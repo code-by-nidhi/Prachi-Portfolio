@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { site } from "@/data/site";
-import { BasketballIcon, InfoIcon } from "@/components/icons";
+import { getContent } from "@/lib/content";
+import { CompassIcon, InfoIcon } from "@/components/icons";
 
-const navItems = [
-  { href: "/about", label: "About me", Icon: InfoIcon },
-  { href: "/play", label: "Play", Icon: BasketballIcon },
-];
+export default async function Navbar() {
+  const { site, nav } = await getContent();
+  const navItems = [
+    { href: "/about", label: nav.about, Icon: InfoIcon },
+    { href: "/explore", label: nav.explore, Icon: CompassIcon },
+  ];
 
-export default function Navbar() {
   return (
     <header className="bg-surface p-2 sm:p-3">
       <nav className="flex gap-2 sm:gap-3 h-[84px] sm:h-[125px]">

@@ -20,6 +20,23 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Admin dashboard
+
+All text, images and links on the site can be edited at [`/admin`](http://localhost:3000/admin).
+Content is stored in Supabase; until it's connected the site shows the defaults from `src/data/site.ts`.
+
+One-time setup:
+
+1. Create a free project at [supabase.com](https://supabase.com).
+2. In the Supabase dashboard open **SQL Editor**, paste the contents of `supabase/schema.sql` and click **Run**.
+   This creates the content table and a public `portfolio` storage bucket for uploads.
+3. Copy `.env.example` to `.env.local` and fill in:
+   - `SUPABASE_URL` and `SUPABASE_SECRET_KEY`: from **Project Settings → API Keys** (use the *secret* key, or the legacy `service_role` key).
+   - `ADMIN_PASSWORD`: the password for `/admin`.
+4. Restart `npm run dev`, open `/admin`, log in, edit, and click **Save changes**. Edits go live immediately.
+
+When deploying (e.g. Vercel), add the same environment variables in the host's project settings.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

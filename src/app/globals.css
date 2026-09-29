@@ -23,6 +23,7 @@
   --font-serif: var(--font-newsreader);
   --font-mono: var(--font-jetbrains-mono);
   --font-open: var(--font-open-sans);
+  --font-script: var(--font-yellowtail);
 }
 
 /* Infinite horizontal slider: the track holds two identical halves and slides by one half. */
@@ -41,6 +42,30 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee { animation: none; }
+}
+
+/* Blinking caret for the typewriter heading in the CTA section. */
+@keyframes caret {
+  50% { opacity: 0; }
+}
+
+.animate-caret {
+  animation: caret 1s steps(1) infinite;
+}
+
+/* Scattered stars for the dark avatar card on /hire. */
+.starfield {
+  background-color: #000;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, #fff9, transparent),
+    radial-gradient(1px 1px at 27% 64%, #fff7, transparent),
+    radial-gradient(1.5px 1.5px at 41% 32%, #fffa, transparent),
+    radial-gradient(1px 1px at 58% 12%, #fff8, transparent),
+    radial-gradient(1px 1px at 66% 78%, #fff6, transparent),
+    radial-gradient(1.5px 1.5px at 79% 41%, #fff9, transparent),
+    radial-gradient(1px 1px at 88% 86%, #fff7, transparent),
+    radial-gradient(1px 1px at 93% 22%, #fff8, transparent);
+  background-size: 180px 180px;
 }
 
 /* Custom rounded-arrow cursor; hotspot sits on the tip. White outline keeps it visible on dark sections. */

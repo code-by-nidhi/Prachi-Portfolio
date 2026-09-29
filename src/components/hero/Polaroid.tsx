@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Paperclip from "./Paperclip";
+import { isUnoptimized } from "@/lib/image";
 
 type PolaroidProps = {
   src: string;
@@ -19,6 +20,7 @@ export default function Polaroid({ src, name, caption, year }: PolaroidProps) {
             fill
             priority
             sizes="258px"
+            unoptimized={isUnoptimized(src)}
             className="object-cover grayscale contrast-[1.1]"
           />
           <div className="grain absolute inset-0 opacity-70 mix-blend-multiply" />
